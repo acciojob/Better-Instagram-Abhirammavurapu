@@ -1,30 +1,32 @@
-//your code here
+
+//your code herez
 const images = document.querySelectorAll(".image");
 
 let dragged = null;
 
-images.forEach((img) => {
-    img.addEventListener("dragstart", function () {
+// Drag starts
+images.forEach((image) => {
+    image.addEventListener("dragstart", function () {
         dragged = this;
         this.classList.add("selected");
     });
 
-    img.addEventListener("dragover", function (e) {
+    // Allow drop
+    image.addEventListener("dragover", function (e) {
         e.preventDefault();
     });
 
-    img.addEventListener("drop", function (e) {
-        e.preventDefault();
-
+    // Drop
+    image.addEventListener("drop", function () {
         if (dragged !== this) {
-            // Swap the IDs
-            const tempId = dragged.id;
+            let tempId = dragged.id;
             dragged.id = this.id;
             this.id = tempId;
         }
     });
 
-    img.addEventListener("dragend", function () {
+    // Drag ends
+    image.addEventListener("dragend", function () {
         this.classList.remove("selected");
     });
 });
