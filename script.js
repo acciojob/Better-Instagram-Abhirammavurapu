@@ -1,33 +1,27 @@
 
-//your code herez
+//your code herez  });
+//your code here
+const parent = document.getElementById("parent");
 const images = document.querySelectorAll(".image");
+images.forEach(image => {
+	image.addEventListener("dragstart", function (e) {
+		e.dataTransfer.setData("text", e.target.id);
+	})
 
-let dragged = null;
+	image.addEventListener("dragover", function(e) {
+		e.preventDefault();
+	})
 
-images.forEach((image) => {
-    image.addEventListener("dragstart", function () {
-        dragged = this;
-        this.classList.add("selected");
-    });
-
-    image.addEventListener("dragover", function (e) {
-        e.preventDefault();
-    });
-
-    image.addEventListener("drop", function () {
-        if (dragged && dragged !== this) {
-            const parent = this.parentNode;
-
-            const draggedNext = dragged.nextSibling;
-            const targetNext = this.nextSibling;
-
-            parent.insertBefore(dragged, targetNext);
-            parent.insertBefore(this, draggedNext);
-        }
-    });
-
-    image.addEventListener("dragend", function () {
-        this.classList.remove("selected");
-        dragged = null;
-    });
-});
+	image.addEventListener("drop", function (e) {
+		e.preventDefault();
+		const dragId = e.dataTransfer.getData("text");
+		const dragElement = document.getElementById(dragId);
+		const nextToDragEle = dragElement.nextElementSibling;
+		parent.insertBefore(dragElement, image);
+		if(nextToDragEle){
+			parent.insertBefore(image, nextToDragEle);
+		} else {
+			parent.append(image);
+		}
+	})
+})
