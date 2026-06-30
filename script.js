@@ -4,29 +4,30 @@ const images = document.querySelectorAll(".image");
 
 let dragged = null;
 
-// Drag starts
 images.forEach((image) => {
     image.addEventListener("dragstart", function () {
         dragged = this;
         this.classList.add("selected");
     });
 
-    // Allow drop
     image.addEventListener("dragover", function (e) {
         e.preventDefault();
     });
 
-    // Drop
     image.addEventListener("drop", function () {
-        if (dragged !== this) {
-            let tempId = dragged.id;
-            dragged.id = this.id;
-            this.id = tempId;
+        if (dragged && dragged !== this) {
+            const parent = this.parentNode;
+
+            const draggedNext = dragged.nextSibling;
+            const targetNext = this.nextSibling;
+
+            parent.insertBefore(dragged, targetNext);
+            parent.insertBefore(this, draggedNext);
         }
     });
 
-    // Drag ends
     image.addEventListener("dragend", function () {
         this.classList.remove("selected");
+        dragged = null;
     });
 });
